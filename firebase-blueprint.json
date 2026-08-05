@@ -1,0 +1,79 @@
+{
+  "entities": {
+    "completed_workouts": {
+      "title": "Completed Workouts",
+      "description": "Logged workout sessions with exercises, weights, and reps",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "startTime": { "type": "number" },
+        "endTime": { "type": "number" },
+        "exercises": { "type": "array" },
+        "notes": { "type": "string" },
+        "totalVolume": { "type": "number" }
+      },
+      "required": ["id", "name", "startTime", "exercises"]
+    },
+    "workout_templates": {
+      "title": "Workout Templates",
+      "description": "Pre-configured routines",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "description": { "type": "string" },
+        "exercises": { "type": "array" },
+        "createdAt": { "type": "number" }
+      },
+      "required": ["id", "name"]
+    },
+    "exercises": {
+      "title": "Exercises",
+      "description": "Full directory of 800+ fitness movements",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "category": { "type": "string" },
+        "equipment": { "type": "string" },
+        "primaryMuscles": { "type": "array" },
+        "secondaryMuscles": { "type": "array" },
+        "instructions": { "type": "array" },
+        "isCustom": { "type": "boolean" }
+      },
+      "required": ["id", "name", "category"]
+    },
+    "active_sessions": {
+      "title": "Active Sessions",
+      "description": "Currently in-progress workout session state",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "startTime": { "type": "number" },
+        "exercises": { "type": "array" },
+        "notes": { "type": "string" }
+      },
+      "required": ["name", "startTime", "exercises"]
+    }
+  },
+  "firestore": {
+    "completed_workouts/{workoutId}": {
+      "schema": { "$ref": "#/entities/completed_workouts" },
+      "description": "Collection storing completed workout logs"
+    },
+    "workout_templates/{templateId}": {
+      "schema": { "$ref": "#/entities/workout_templates" },
+      "description": "Collection storing saved routines and templates"
+    },
+    "exercises/{exerciseId}": {
+      "schema": { "$ref": "#/entities/exercises" },
+      "description": "Collection storing full 800+ exercise movements library"
+    },
+    "active_sessions/{sessionId}": {
+      "schema": { "$ref": "#/entities/active_sessions" },
+      "description": "Collection storing currently active workout session state"
+    }
+  }
+}

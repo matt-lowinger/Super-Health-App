@@ -1,0 +1,6 @@
+{
+  "name": "Workout Routine Logger",
+  "description": "A high-performance full-featured workout tracker and routine planner with real-time timers, local persistent cache, custom exercise directories, and synchronization endpoints.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
