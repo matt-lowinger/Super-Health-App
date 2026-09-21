@@ -50,6 +50,7 @@ export interface CompletedWorkout {
 }
 
 export interface ActiveSession {
+  id?: string;
   name: string;
   templateId?: string;
   startTime: number;
@@ -72,3 +73,79 @@ export interface HistoricalBest {
   lastReps?: number;
   history: { date: string; weight: number; reps: number; oneRepMax: number }[];
 }
+
+// ==========================================
+// Pocket Breath Coach Types
+// ==========================================
+
+export type BreathPhase = 'inhale' | 'inhaleHold' | 'exhale' | 'exhaleHold';
+
+export type ScientificProtocolId =
+  | 'box-breathing'
+  | 'parasympathetic-switch-4-7-8'
+  | 'coherent-resonance'
+  | 'physiological-sigh'
+  | 'vagus-nerve-pacing'
+  | 'panic-reset-7-11'
+  | 'awake-energize'
+  | 'buteyko-reduced';
+
+export interface BreathPattern {
+  id: string;
+  patternId: ScientificProtocolId;
+  name: string;
+  subtitle: string;
+  scientificSource: string;
+  clinicalMechanism: string;
+  targetEffect: string;
+  category: 'stress' | 'sleep' | 'hrv' | 'recovery' | 'energy' | 'endurance';
+  inhale: number;
+  inhaleHold: number;
+  exhale: number;
+  exhaleHold: number;
+  defaultInhale: number;
+  defaultInhaleHold: number;
+  defaultExhale: number;
+  defaultExhaleHold: number;
+  updatedAt?: string;
+  userId?: string;
+}
+
+export type VisualMode = 'wave';
+
+export type DynamicBackgroundScene =
+  | 'lake-tahoe'
+  | 'aurora-borealis'
+  | 'twilight-sunset'
+  | 'forest-mist'
+  | 'minimal-zen';
+
+export type AmbientSoundscape = 'none' | 'ocean-waves' | 'forest-rain' | 'tibetan-bowls' | 'brown-noise';
+
+export type PostSessionFeeling = 'calm' | 'focused' | 'energized' | 'sleepy';
+
+export interface BreathworkSession {
+  id: string;
+  date: string; // YYYY-MM-DD
+  startTime: string; // Clock time
+  timestamp: number;
+  patternId: string;
+  patternName: string;
+  durationMinutes: number;
+  durationSeconds: number;
+  cyclesCompleted: number;
+  feelingAfter?: PostSessionFeeling;
+  backgroundScene: DynamicBackgroundScene;
+  userId?: string;
+  notes?: string;
+}
+
+export interface BreathActivityLog {
+  id: string;
+  eventType: 'session_start' | 'session_complete' | 'pattern_calibrated' | 'pattern_reset';
+  patternId: string;
+  timestamp: string;
+  userId?: string;
+  details?: Record<string, unknown>;
+}
+

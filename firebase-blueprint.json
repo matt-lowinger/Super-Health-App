@@ -56,6 +56,57 @@
         "notes": { "type": "string" }
       },
       "required": ["name", "startTime", "exercises"]
+    },
+    "breath_patterns": {
+      "title": "Breath Patterns",
+      "description": "Calibrated phase durations for scientific breathwork protocols",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "patternId": { "type": "string" },
+        "inhale": { "type": "number" },
+        "inhaleHold": { "type": "number" },
+        "exhale": { "type": "number" },
+        "exhaleHold": { "type": "number" },
+        "updatedAt": { "type": "string" },
+        "userId": { "type": "string" }
+      },
+      "required": ["id", "patternId", "inhale", "exhale"]
+    },
+    "breathwork_sessions": {
+      "title": "Breathwork Sessions",
+      "description": "Logged breath coach practice sessions with post-session state",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "date": { "type": "string" },
+        "startTime": { "type": "string" },
+        "timestamp": { "type": "number" },
+        "patternId": { "type": "string" },
+        "patternName": { "type": "string" },
+        "durationMinutes": { "type": "number" },
+        "durationSeconds": { "type": "number" },
+        "cyclesCompleted": { "type": "number" },
+        "feelingAfter": { "type": "string" },
+        "backgroundScene": { "type": "string" },
+        "userId": { "type": "string" },
+        "notes": { "type": "string" }
+      },
+      "required": ["id", "patternName", "durationMinutes", "cyclesCompleted"]
+    },
+    "activity_logs": {
+      "title": "Activity Logs",
+      "description": "Audit telemetry events for breathwork coaching and workouts",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "eventType": { "type": "string" },
+        "patternId": { "type": "string" },
+        "timestamp": { "type": "string" },
+        "userId": { "type": "string" },
+        "details": { "type": "object" }
+      },
+      "required": ["id", "eventType", "timestamp"]
     }
   },
   "firestore": {
@@ -74,6 +125,30 @@
     "active_sessions/{sessionId}": {
       "schema": { "$ref": "#/entities/active_sessions" },
       "description": "Collection storing currently active workout session state"
+    },
+    "breath_patterns/{patternId}": {
+      "schema": { "$ref": "#/entities/breath_patterns" },
+      "description": "Calibrated phase seconds for breath protocols"
+    },
+    "users/{userId}/breathPatterns/{patternId}": {
+      "schema": { "$ref": "#/entities/breath_patterns" },
+      "description": "User-scoped calibrated breath protocol configurations"
+    },
+    "breathwork_sessions/{sessionId}": {
+      "schema": { "$ref": "#/entities/breathwork_sessions" },
+      "description": "Collection storing logged breathwork practice sessions"
+    },
+    "users/{userId}/breathworkSessions/{sessionId}": {
+      "schema": { "$ref": "#/entities/breathwork_sessions" },
+      "description": "User-scoped logged breathwork practice sessions"
+    },
+    "activity_logs/{logId}": {
+      "schema": { "$ref": "#/entities/activity_logs" },
+      "description": "Audit telemetry log collection"
+    },
+    "users/{userId}/activityLogs/{logId}": {
+      "schema": { "$ref": "#/entities/activity_logs" },
+      "description": "User-scoped audit telemetry logs"
     }
   }
 }

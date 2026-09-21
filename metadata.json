@@ -1,6 +1,6 @@
 {
   "name": "Workout Routine Logger",
-  "description": "A high-performance full-featured workout tracker and routine planner with real-time timers, local persistent cache, custom exercise directories, and synchronization endpoints.",
+  "description": "High-performance workout tracker, routine planner, and scientific Pocket Breath Coach with real-time timers, Canvas physics visualization, Web Audio soundscapes, and Cloud Firestore synchronization.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

@@ -361,7 +361,11 @@ export function generateId(): string {
   return Math.random().toString(36).substring(2, 11);
 }
 
-export function getExerciseHistory(exerciseId: string, completedWorkouts: CompletedWorkout[]): HistoricalBest {
+export function getExerciseHistory(
+  exerciseId: string,
+  completedWorkouts: CompletedWorkout[],
+  exerciseName?: string
+): HistoricalBest {
   const history: { date: string; weight: number; reps: number; oneRepMax: number }[] = [];
   let bestWeight = 0;
   let bestReps = 0;
@@ -372,8 +376,15 @@ export function getExerciseHistory(exerciseId: string, completedWorkouts: Comple
   // Sort workouts chronological to find last and best
   const sortedWorkouts = [...completedWorkouts].sort((a, b) => a.startTime - b.startTime);
 
+  const normTargetName = exerciseName ? exerciseName.trim().toLowerCase() : '';
+
   for (const cw of sortedWorkouts) {
-    const matchedEx = cw.exercises.find((e) => e.exerciseId === exerciseId);
+    const matchedEx = cw.exercises.find((e) => {
+      if (e.exerciseId === exerciseId) return true;
+      if (normTargetName && e.name && e.name.trim().toLowerCase() === normTargetName) return true;
+      return false;
+    });
+
     if (matchedEx) {
       const dateStr = formatDate(cw.startTime);
       for (const set of matchedEx.sets) {
@@ -421,18 +432,25 @@ export function getLastSetHistoryEntries(
   exerciseId: string,
   setIndex: number,
   completedWorkouts: CompletedWorkout[],
-  maxCount: number = 3
+  maxCount: number = 3,
+  exerciseName?: string
 ): SetHistoryEntry[] {
   if (!completedWorkouts || completedWorkouts.length === 0) return [];
 
   // Sort completed workouts descending by startTime (most recent first)
   const sorted = [...completedWorkouts].sort((a, b) => b.startTime - a.startTime);
   const entries: SetHistoryEntry[] = [];
+  const normTargetName = exerciseName ? exerciseName.trim().toLowerCase() : '';
 
   for (const cw of sorted) {
     if (entries.length >= maxCount) break;
 
-    const matchedEx = cw.exercises?.find((e) => e.exerciseId === exerciseId);
+    const matchedEx = cw.exercises?.find((e) => {
+      if (e.exerciseId === exerciseId) return true;
+      if (normTargetName && e.name && e.name.trim().toLowerCase() === normTargetName) return true;
+      return false;
+    });
+
     if (matchedEx && matchedEx.sets && matchedEx.sets.length > 0) {
       // Pick set at setIndex if available, or closest available set
       const targetSet = matchedEx.sets[setIndex] || matchedEx.sets[matchedEx.sets.length - 1];

@@ -1,7 +1,45 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    // User-scoped breath coach collections
+    match /users/{userId} {
+      allow read, write: if isOwner(userId);
+
+      match /breathPatterns/{patternId} {
+        allow read, write: if isOwner(userId);
+      }
+      match /breathworkSessions/{sessionId} {
+        allow read, write: if isOwner(userId);
+      }
+      match /activityLogs/{logId} {
+        allow read, write: if isOwner(userId);
+      }
+    }
+
+    // App-level breath coach collections
+    match /breath_patterns/{patternId} {
+      allow read, write: if true;
+    }
+    match /breathwork_sessions/{sessionId} {
+      allow read, write: if true;
+    }
+    match /activity_logs/{logId} {
+      allow read, write: if true;
+    }
+
+    // Workout Routine Logger collections
     match /completed_workouts/{workoutId} {
+      allow read, write: if true;
+    }
+    match /completed_sessions/{sessionId} {
       allow read, write: if true;
     }
     match /workout_templates/{templateId} {
@@ -10,11 +48,17 @@ service cloud.firestore {
     match /exercises/{exerciseId} {
       allow read, write: if true;
     }
+    match /excercises/{exerciseId} {
+      allow read, write: if true;
+    }
     match /active_sessions/{sessionId} {
       allow read, write: if true;
     }
+
+    // Fallback document rule
     match /{document=**} {
       allow read, write: if true;
     }
   }
 }
+
